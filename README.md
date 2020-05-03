@@ -17,4 +17,5 @@ Install the dependencies and devDependencies and start the server.
 $ git clone {repository}
 $ cd {repository}
 $ npm install 
+$ npm run android
 ```
