@@ -11,12 +11,12 @@ import {
   Text,
   Title,
 } from 'native-base';
-import React, {Component} from 'react';
-import {Picker, ScrollView, TouchableOpacity, View} from 'react-native';
+import React, { Component } from 'react';
+import { Picker, ScrollView, TouchableOpacity, View } from 'react-native';
 import 'react-native-get-random-values';
-import {connect} from 'react-redux';
-import {v4 as uuidv4} from 'uuid';
-import {addMonth, counts, removeMonth} from '../actions/monthActions';
+import { connect } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
+import { addMonth, counts, removeMonth } from '../actions/monthActions';
 
 class ListMonth extends Component {
   state = {
@@ -39,7 +39,7 @@ class ListMonth extends Component {
   };
 
   componentDidUpdate(prevProps) {
-    const {monthes} = this.props;
+    const { monthes } = this.props;
     let prevPropsData = prevProps.monthes;
     let balance = 0;
     if (monthes.monthList != prevPropsData.monthList) {
@@ -49,7 +49,7 @@ class ListMonth extends Component {
           balance += countsItem.balance;
         }
       }
-      this.setState({balance});
+      this.setState({ balance });
     }
   }
 
@@ -66,10 +66,10 @@ class ListMonth extends Component {
     });
   };
 
-  addMoreItem = (item) => this.props.navigation.navigate('Form', {item});
+  addMoreItem = (item) => this.props.navigation.navigate('Form', { item });
 
   showList = (item) =>
-    this.props.navigation.navigate('ListMonthDetail', {item});
+    this.props.navigation.navigate('ListMonthDetail', { item });
 
   renderList = () => {
     if (!this.props.monthes.monthList.length) {
@@ -81,9 +81,9 @@ class ListMonth extends Component {
             alignItems: 'center',
           }}>
           <Icon
-            type="FontAwesome"
-            name="dropbox"
-            style={{fontSize: 80, color: '#bdc3c7'}}
+            type='FontAwesome'
+            name='dropbox'
+            style={{ fontSize: 80, color: '#bdc3c7' }}
           />
         </View>
       );
@@ -91,44 +91,48 @@ class ListMonth extends Component {
     return this.props.monthes.monthList.map((item) => {
       let countsItem = counts(item.budget);
       return (
-        <Card key={item.id} style={{borderRadius: 10}}>
-          <CardItem header bordered style={{borderRadius: 10}}>
+        <Card key={item.id} style={{ borderRadius: 10 }}>
+          <CardItem header bordered style={{ borderRadius: 10 }}>
             <Left>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>
+              <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
                 {item.date}
               </Text>
             </Left>
             <Right>
-              <View style={{flexDirection: 'row-reverse'}}>
+              <View style={{ flexDirection: 'row-reverse' }}>
                 <TouchableOpacity
                   onPress={() => this.props.removeMonth(item.id)}>
                   <Icon
-                    type="MaterialIcons"
-                    name="delete"
-                    style={{fontSize: 25, color: 'red', marginHorizontal: 5}}
+                    type='MaterialIcons'
+                    name='delete'
+                    style={{ fontSize: 25, color: 'red', marginHorizontal: 5 }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.addMoreItem(item)}>
                   <Icon
-                    type="MaterialIcons"
-                    name="add"
-                    style={{fontSize: 25, color: 'blue', marginHorizontal: 5}}
+                    type='MaterialIcons'
+                    name='add'
+                    style={{ fontSize: 25, color: 'blue', marginHorizontal: 5 }}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => this.showList(item)}>
                   <Icon
-                    type="MaterialIcons"
-                    name="list"
-                    style={{fontSize: 25, color: 'green', marginHorizontal: 5}}
+                    type='MaterialIcons'
+                    name='list'
+                    style={{
+                      fontSize: 25,
+                      color: 'green',
+                      marginHorizontal: 5,
+                    }}
                   />
                 </TouchableOpacity>
               </View>
             </Right>
           </CardItem>
-          <CardItem bordered style={{borderRadius: 10}}>
+          <CardItem bordered style={{ borderRadius: 10 }}>
             <Body>
               <Text>Pemasukan: Rp.{countsItem.incomes}</Text>
-              <Text style={{color: 'red', marginTop: 5}}>
+              <Text style={{ color: 'red', marginTop: 5 }}>
                 Pengeluaran: Rp.{countsItem.expense} / {countsItem.percent}%
               </Text>
             </Body>
@@ -139,7 +143,7 @@ class ListMonth extends Component {
   };
 
   render() {
-    const {monthName, selectedMonth} = this.state;
+    const { monthName, selectedMonth } = this.state;
 
     const monthNameComponent = monthName.map((val, idx) => {
       return <Picker.Item key={idx} value={val} label={val} />;
@@ -155,18 +159,20 @@ class ListMonth extends Component {
           <Right />
         </Header>
         <Picker
-          mode="dropdown"
-          iosIcon={<Icon name="ios-arrow-down" />}
-          style={{height: 50, width: 150}}
+          mode='dropdown'
+          iosIcon={<Icon name='ios-arrow-down' />}
+          style={{ height: 50, width: 150 }}
           selectedValue={selectedMonth}
           onValueChange={(val) => this.handleMonthPicker(val)}>
-          <Picker.Item value="Month" label="Month" />
+          <Picker.Item value='Month' label='Month' />
           {monthNameComponent}
         </Picker>
         <ScrollView>
-          <Text style={{fontSize: 20, fontWeight: 'bold', marginLeft: 10}}>
-            Saldo: {this.state.balance}
-          </Text>
+          <View style={{flexDirection: 'row', justifyContent: 'flex-end', marginRight: 20}}>
+            <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
+              Saldo: Rp.{this.state.balance}
+            </Text>
+          </View>
           <Content padder>{this.renderList()}</Content>
         </ScrollView>
       </Container>
@@ -174,8 +180,8 @@ class ListMonth extends Component {
   }
 }
 
-const mapStateToProps = ({monthes}) => ({
+const mapStateToProps = ({ monthes }) => ({
   monthes,
 });
 
-export default connect(mapStateToProps, {addMonth, removeMonth})(ListMonth);
+export default connect(mapStateToProps, { addMonth, removeMonth })(ListMonth);
